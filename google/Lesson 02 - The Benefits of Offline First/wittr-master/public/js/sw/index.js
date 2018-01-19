@@ -1,6 +1,6 @@
 const cacheName = 'wittr';
 // s s s dddd  
-const staticCacheName = cacheName + '-static-v4';
+const staticCacheName = cacheName + '-static-v7';
 
 var urlsToCache = [
     '/skeleton',
@@ -13,7 +13,7 @@ var urlsToCache = [
 
 //
 self.addEventListener('install', (event) => {
-    // TODO: cache /skeleton rather than the root page
+    // Cache /skeleton rather than the root page
 
     event.waitUntil(
         caches.open(staticCacheName)
@@ -45,7 +45,7 @@ self.addEventListener('activate', (event) => {
 });
 self.addEventListener('fetch', (event) => {
 
-    // TODO: respond to requests for the root page with
+    // respond to requests for the root page with
     // the page skeleton from the cache
     var requestURL = new URL(event.request.url);
     if (requestURL.origin === location.origin) {
@@ -67,7 +67,7 @@ self.addEventListener('fetch', (event) => {
     )
 });
 
-//TODO: listen for the 'message' event and call skipwaiting 
+//listen for the 'message' event and call skipwaiting 
 // if you get the appropiate message
 self.addEventListener('message', (event) => {
     console.log('[Service Worker] Message =>', event.data);

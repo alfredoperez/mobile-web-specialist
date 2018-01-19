@@ -2,13 +2,44 @@ import PostsView from './views/Posts';
 import ToastsView from './views/Toasts';
 import idb from 'idb';
 
+function openDatabase() {
+  // If the browser doesn't support service worker,
+  // we don't care about having a database
+  if (!navigator.serviceWorker) {
+    return Promise.resolve();
+  }
+
+  // Return a promise for a database called 'wittr'
+  // that contains one objectStore: 'wittrs'
+  // that uses 'id' as its key
+  // and has an index called 'by-date', which is sorted
+  // by the 'time' property
+  var dbPromise = idb.open('wittr', 1, (upgradeDb) => {
+    switch (upgradeDb.oldVersion) {
+      case 0:
+        var keyValStore = upgradeDb.createObjectStore('wittrs', {
+          keyPath: 'id'
+        });
+        keyValStore.createIndex('by-date', 'time');
+    }
+  });
+  return dbPromise;
+}
+
 export default function IndexController(container) {
   this._container = container;
   this._postsView = new PostsView(this._container);
   this._toastsView = new ToastsView(this._container);
   this._lostConnectionToast = null;
   this._openSocket();
+  this._dbPromise = openDatabase();
   this._registerServiceWorker();
+
+  var indexController = this;
+
+  this._showCachedMessages().then(() => {
+    indexController._openSocket();
+  });
 }
 
 IndexController.prototype._registerServiceWorker = function () {
@@ -36,7 +67,7 @@ IndexController.prototype._registerServiceWorker = function () {
     });
   });
 
-  // TODO: listen for the controlling service worker changing
+  // listen for the controlling service worker changing
   // and reload the page
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     location.reload();
@@ -64,6 +95,34 @@ IndexController.prototype._updateReady = function (worker) {
       skipWaiting: true
     });
   });
+};
+
+IndexController.prototype._showCachedMessages = function () {
+  var indexController = this;
+
+  return this._dbPromise.then(function (db) {
+    // if we're already showing posts, eg shift-refresh
+    // or the very first load, there's no point fetching
+    // posts from IDB
+    if (!db || indexController._postsView.showingPosts()) return;
+
+    // Get all of the wittr message objects from indexeddb,
+    // then pass them to:
+    // indexController._postsView.addPosts(messages)
+    // in order of date, starting with the latest.
+    // Remember to return a promise that does all this,
+    // so the websocket isn't opened until you're done!
+
+    var timeIndex = db.transaction('wittrs')
+      .objectStore('wittrs')
+      .index('by-date');
+
+    return timeIndex.getAll()
+      .then((messages) => {
+        indexController._postsView.addPosts(messages.reverse());
+      });
+
+  })
 };
 
 // open a connection to the server for live updates
@@ -114,5 +173,24 @@ IndexController.prototype._openSocket = function () {
 // called when the web socket sends message data
 IndexController.prototype._onSocketMessage = function (data) {
   var messages = JSON.parse(data);
+
+  this._dbPromise.then(function (db) {
+    if (!db) return;
+
+    //  put each message into the 'wittrs'
+    // object store.
+    // update
+
+    var tx = db.transaction('wittrs', 'readwrite');
+    var keyValStore = tx.objectStore('wittrs');
+
+    messages.forEach((message) => {
+      keyValStore.put(message);
+    })
+
+    return tx.complete
+
+  });
+
   this._postsView.addPosts(messages);
 };
