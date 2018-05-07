@@ -34,8 +34,13 @@ export default function IndexController(container) {
   this._openSocket();
   this._dbPromise = openDatabase();
   this._registerServiceWorker();
-
+  this._cleanImageCache();
   var indexController = this;
+
+  // Clean image cache every 5 min
+  setInterval(() => {
+    indexController._cleanImageCache();
+  }, 1000 * 60 * 5);
 
   this._showCachedMessages().then(() => {
     indexController._openSocket();
@@ -112,7 +117,6 @@ IndexController.prototype._showCachedMessages = function () {
     // in order of date, starting with the latest.
     // Remember to return a promise that does all this,
     // so the websocket isn't opened until you're done!
-
     var timeIndex = db.transaction('wittrs')
       .objectStore('wittrs')
       .index('by-date');
@@ -169,6 +173,43 @@ IndexController.prototype._openSocket = function () {
     }, 5000);
   });
 };
+IndexController.prototype._cleanImageCache = function () {
+  return this._dbPromise.then(function (db) {
+    if (!db) return;
+
+    // Open the 'wittr' object store, get all the messages,
+    // gather all the photo urls.
+    //
+    // Open the 'wittr-content-imgs' cache, and delete any entry
+    // that you no longer need.
+    var imagesNeeded = [];
+    var tx = db.transaction('wittrs');
+    return tx
+      .objectStore('wittrs').getAll().then((messages) => {
+        messages.forEach((message) => {
+          if (message.photo) {
+            imagesNeeded.push(message.photo);
+          }
+          // keeping all the avatar images
+          imagesNeeded.push(message.avatar);
+        });
+
+        return caches.open('wittr-content-imgs');
+      })
+      .then(function (cache) {
+        return cache.keys().then((requests) => {
+          requests.forEach((request) => {
+            var url = new URL(request.url);
+
+            if (!imagesNeeded.includes(url.pathname)) {
+              console.log('Deleting Cache -> ', url.pathname);
+              cache.delete(request);
+            }
+          });
+        });
+      });
+  });
+};
 
 // called when the web socket sends message data
 IndexController.prototype._onSocketMessage = function (data) {
@@ -188,9 +229,28 @@ IndexController.prototype._onSocketMessage = function (data) {
       keyValStore.put(message);
     })
 
-    return tx.complete
+    // Keep the newest 30 entries in 'wittrs',
+    // but delete the rest.
+    //
+    // Hint: you can use .openCursor(null, 'prev') to
+    // open a cursor that goes through an index/store
+    // backwards.
+    keyValStore.index('by-date')
+      .openCursor(null, 'prev').then((cursor) => {
+        if (!cursor) return;
+        // This will skip the 30 first items
+        return cursor.advance(30);
+      }).then(function deleteItem(cursor) {
+        if (!cursor) return;
+        console.log('Cursor author --> ', cursor.value.name);
+        console.log('Cursor time --> ', cursor.value.time);
+        // delete until there is not iterator
+        cursor.delete();
+        return cursor.continue().then(deleteItem)
+      });
 
-  });
+
+  })
 
   this._postsView.addPosts(messages);
 };
