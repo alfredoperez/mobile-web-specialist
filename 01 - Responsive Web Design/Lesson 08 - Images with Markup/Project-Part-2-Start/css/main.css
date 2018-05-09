@@ -1,0 +1,38 @@
+[class*="zocial-"]:before {
+  color: black;
+  display: inline-block;
+  font-family: 'zocial', sans-serif;
+  text-shadow: 3px 3px 3px #aaa;
+  width: 2em;
+}
+
+a:hover [class*="zocial-"]:before {
+  color: #3d85c6;
+}
+
+div#social a {
+  margin: 0 1em 0 0;
+}
+
+div#social a:last-of-type {
+  margin: 0;
+}
+
+article {
+  margin: 0 auto;
+  max-width: 50em;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 2em;
+}
+
+h1 {
+  margin: 0 auto 1em;
+  width: 800px;
+}
+
+img {
+  max-width: 100%;
+}
