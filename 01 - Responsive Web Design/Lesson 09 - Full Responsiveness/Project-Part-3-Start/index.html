@@ -9,6 +9,7 @@
         content="//samdutton.com">
   <meta name="viewport"
         content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta charset="utf-8">
   <meta itemprop="name"
         content="Udacity Responsive Images course project">
   <meta itemprop="image"
@@ -18,7 +19,7 @@
   <meta id="theme-color"
         name="theme-color"
         content="#307699">
-  <meta charset="utf-8">
+
   <base target="_blank">
 
   <title>My responsive blog: picture story</title>
@@ -30,6 +31,7 @@
         href="css/main.css" />
   <link rel="stylesheet"
         href="http://weloveiconfonts.com/api/?family=zocial" />
+
   <!-- loads the Udacity Feedback extension -->
   <meta name="udacity-grader"
         content="http://udacity.github.io/responsive-images/project/project-grader.json"
@@ -39,14 +41,32 @@
 </head>
 
 <body>
+  <header>
+    <a href="//github.com/udacity/responsive-images/"
+       title="Home page for course examples">
+      <svg id="logo"
+           xmlns="http://www.w3.org/2000/svg"
+           width="24"
+           height="24"
+           viewBox="0 0 24 24">
+        <title>Responsive logo</title>
+        <path d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"></path>
+      </svg>
+    </a>
+  </header>
 
   <h1>My responsive blog</h1>
 
   <article>
     <picture>
-      <source/>
-      <source/>
-      <img src="images/still_life-1600_large_2x.jpg">
+      <source media="(min-width:750px)"
+              srcset="images/still_life-1600_large_2x.jpg 2x, images/still_life-800_large_1x.jpg"
+      />
+      <source media="(min-width:500px)"
+              srcset="images/still_life_medium.jpg" />
+
+      <img src="images/still_life_small.jpg"
+           alt="Still life image">
     </picture>
 
 
@@ -60,9 +80,14 @@
 
     <figure>
       <picture>
-        <source/>
-        <source/>
-        <img src="images/horses-1600_large_2x.jpg">
+        <source media="(min-width:750px)"
+                srcset="images/horses-1600_large_2x.jpg 2x, images/horses-800_large_1x.jpg"
+        />
+        <source media="(min-width:500px)"
+                srcset="images/horses_medium.jpg" />
+
+        <img src="images/horses_small.jpg"
+             alt="horses">
       </picture>
 
       <figcaption>Horses in Hawaii</figcaption>
@@ -81,13 +106,18 @@
 
     <figure>
       <picture>
-        <source/>
-        <source/>
-        <img src="images/volt-1600_large_2x.jpg">
+        <source media="(min-width:750px)"
+                srcset="images/volt-1600_large_2x.jpg 2x, images/volt-800_large_1x.jpg" />
+        <source media="(min-width:500px)"
+                srcset="images/volt_medium.jpg" />
+
+        <img src="images/volt_small.jpg"
+             alt="volt">
       </picture>
 
       <figcaption>Sign in an old Berlin power station</figcaption>
     </figure>
+
 
     <p>Edam parmesan smelly cheese. Dolcelatte say cheese cheesy feet lancashire cow
       boursin stinking bishop brie. Stilton cheese strings say cheese pecorino cheeseburger
@@ -96,18 +126,26 @@
 
     <figure>
       <picture>
-        <source/>
-        <source/>
-        <img src="images/cockatoos-1600_large_2x.jpg">
+        <source media="(min-width:750px)"
+                srcset="images/cockatoos-1600_large_2x.jpg 2x, images/cockatoos-800_large_1x.jpg"
+        />
+        <source media="(min-width:500px)"
+                srcset="images/cockatoos_medium.jpg" />
+
+        <img src="images/cockatoos_small.jpg"
+             alt="cockatoos image">
       </picture>
 
       <figcaption>Cockatoos</figcaption>
     </figure>
 
-    <p>Babybel cream cheese cheese on toast. Brie fromage swiss cheese and biscuits
-      hard cheese babybel bocconcini brie. Cheesy grin swiss cheese strings paneer
-      lancashire cauliflower cheese cheese on toast caerphilly. Queso queso cheese
-      and wine taleggio mascarpone cheeseburger.</p>
+    <p>Vegan Carles church-key 8-bit, tilde swag hoodie heirloom cray 3 wolf moon. 90's
+      stumptown ugh cred hella. Seitan listicle polaroid, meditation mixtape paleo
+      typewriter pop-up migas kogi chia chillwave mlkshk. Hoodie artisan kitsch tote
+      bag banjo. Cred banh mi Brooklyn, vegan Pinterest polaroid crucifix. Fap Bushwick
+      shabby chic meggings, fanny pack stumptown Schlitz taxidermy pork belly. YOLO
+      blog PBR&amp;B literally, lo-fi Austin ugh hashtag retro cornhole deep v fanny
+      pack fingerstache.</p>
 
     <p>Rubber cheese lancashire stinking bishop. Paneer bocconcini bocconcini melted
       cheese brie blue castello mascarpone when the cheese comes out everybody's
@@ -128,13 +166,19 @@
 
     <figure>
       <picture>
-        <source/>
-        <source/>
-        <img src="images/postcard-1600_large_2x.jpg">
+        <source media="(min-width:750px)"
+                srcset="images/postcard-1600_large_2x.jpg 2x, images/postcard-800_large_1x.jpg"
+        />
+        <source media="(min-width:500px)"
+                srcset="images/postcard_medium.jpg" />
+
+        <img src="images/postcard_small.jpg"
+             alt="postcard">
       </picture>
 
       <figcaption>French postcard from 25 November 1914</figcaption>
     </figure>
+
 
     <p>Pecorino pepper jack cheesy feet. Smelly cheese cauliflower cheese fromage halloumi
       cream cheese who moved my cheese fromage fondue. Feta danish fontina cheesy
@@ -143,13 +187,19 @@
 
     <figure>
       <picture>
-        <source/>
-        <source/>
-        <img src="images/grasshopper-1600_large_2x.jpg">
+        <source media="(min-width:750px)"
+                srcset="images/grasshopper-1600_large_2x.jpg 2x, images/grasshopper-800_large_1x.jpg"
+        />
+        <source media="(min-width:500px)"
+                srcset="images/grasshopper_medium.jpg" />
+
+        <img src="images/grasshopper_small.jpg"
+             alt="grasshopper">
       </picture>
 
       <figcaption>Grasshopper on an Akubra hat</figcaption>
     </figure>
+
 
     <p>Babybel cream cheese cheese on toast. Brie fromage swiss cheese and biscuits
       hard cheese babybel bocconcini brie. Cheesy grin swiss cheese strings paneer
@@ -158,10 +208,15 @@
 
     <figure>
       <picture>
-        <source/>
-        <source/>
-        <img src="images/sfo-1600_large_2x.jpg">
+        <source media="(min-width:750px)"
+                srcset="images/sfo-1600_large_2x.jpg 2x, images/sfo-800_large_1x.jpg" />
+        <source media="(min-width:500px)"
+                srcset="images/sfo_medium.jpg" />
+
+        <img src="images/sfo_small.jpg"
+             alt="sfo">
       </picture>
+
       <figcaption>Near SFO</figcaption>
     </figure>
 
@@ -171,11 +226,19 @@
 
     <figure>
       <picture>
-        <img src="images/rosella-1600_large_2x.jpg">
+        <source media="(min-width:750px)"
+                srcset="images/rosella-1600_large_2x.jpg 2x, images/rosella-800_large_1x.jpg"
+        />
+        <source media="(min-width:500px)"
+                srcset="images/rosella_medium.jpg" />
+
+        <img src="images/rosella_small.jpg"
+             alt="rosella">
       </picture>
 
       <figcaption>Australian rosella</figcaption>
     </figure>
+
 
     <p>Paneer st. agur blue cheese bocconcini. The big cheese chalk and cheese cheese
       and biscuits cream cheese cheese triangles mascarpone everyone loves rubber
@@ -186,28 +249,28 @@
 
   </article>
 
-
-  <!--
-  Flourish credit: http://pixabay.com/en/flourish-line-border-decoration-31609/
-  -->
-
-  <br>
   <footer>
-    <div id="social">
-      <a href=""
-         class="zocial-github">Github</a>
-      <a href=""
-         class="zocial-twitter">Twitter</a>
-      <a href=""
-         class="zocial-digg">Digg</a>
-      <a href=""
-         class="zocial-facebook">Facebook</a>
-      <a href=""
-         class="zocial-googleplus">Google Plus</a>
-    </div>
-  </footer>
 
-  </article>
+    <div id="social">
+      <a href="https://twitter.com/home?status=https://github.com/udacity/responsive-images"
+    
+         class="zocial-twitter">Twitter</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/udacity/responsive-images"
+    
+         class="zocial-facebook">Facebook</a>
+      <a href="https://plus.google.com/share?url=https://github.com/udacity/responsive-images"
+    
+         class="zocial-googleplus">Google+</a>
+      <a href="http://digg.com/submit?phase=2&url=https%3A%2F%2Fgithub.com%2Fudacity%2Fresponsive-images&title=Udacity%20nano%20course%3A%20Responsive%20Images&bodytext=Responsive%20images%20for%20your%20sites%20and%20web%20apps&topic=tech_news"
+    
+         class="zocial-digg">Digg</a>
+    </div>
+
+    <a href="//github.com/udacity/responsive-images/tree/master/project/final"
+       title="View source for this page on GitHub"
+       id="viewSource">View source on GitHub</a>
+
+  </footer>
 
 </body>
 
