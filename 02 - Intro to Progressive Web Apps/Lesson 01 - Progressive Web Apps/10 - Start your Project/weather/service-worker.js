@@ -49,13 +49,13 @@ self.addEventListener('fetch', function (e) {
     if (e.request.url.startsWith(weatherAPIUrlBase)) {
         e.respondWith(
             fetch(e.request)
-            .then(function (response) {
-                // opening the cache with data
-                return caches.open(dataCacheName).then(function (cache) {
-                    cache.put(e.request.url, response.clone());
-                    console.log('[Service Worker] Fetched and Cached Data!');
-                });
-            })
+                .then(function (response) {
+                    // opening the cache with data
+                    return caches.open(dataCacheName).then(function (cache) {
+                        cache.put(e.request.url, response.clone());
+                        console.log('[Service Worker] Fetched and Cached Data!');
+                    });
+                })
         )
     } else {
         e.respondWith(
